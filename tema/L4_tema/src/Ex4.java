@@ -1,3 +1,8 @@
+// 4. S ̆a se scrie un program Java care cite ̧ste de la tastatur ̆a dou ̆a matrice de numere
+// reale de dimensiune NxM, respectiv MxP, ˆınmult ̧e ̧ste cele dou ̆a matrice  ̧si scrie ˆıntr-
+// un fi ̧sier matricea rezultat ̆a. Toate matricele trebuie s ̆a cont ̧in ̆a ca elemente obiecte
+// Double.
+
 import java.io.*;
 import java.util.Scanner;
 
