@@ -28,7 +28,7 @@ public class App {
                 {"Iceland", "398000", "3.8"},
                 {"Ireland", "5308000", "1.5"},
                 {"Italy", "59146000", "1.1"},
-                {"Kosovo", "1674000", "0.2 (Joshua Project)"},
+                {"Kosovo", "1674000", "0.2"},
                 {"Latvia", "1854000", "7"},
                 {"Liechtenstein", "40000", "0.5"},
                 {"Lithuania", "2830000", "1.1"},
