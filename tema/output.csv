@@ -1,48 +1,49 @@
-Country, Population ,% Evangelical
-Albania,"2,772,000.00",0.5
-Andorra,"83,000.00",0.4
-Austria,"9,114,000.00",0.5
-Belarus,"8,998,000.00",1.3
-Belgiun,"11,759,000.00",1.2
-Bosnia and Herzegovina,"3,140,000.00",0.1
-Bulgaria,"6,715,000.00",1.9
-Croatia,"3,848,000.00",0.4
-Cyprus,"1,371,000.00",0.8
-Czechia,"10,609,000.00",0.7
-Denmark,"6,003,000.00",3.5
-Estonia,"1,344,000.00",4.9
-Faroe Islands,"56,000.00",28.8
-Finland,"5,623,000.00",12.1
-France,"66,651,000.00",1
-Germany,"84,075,000.00",2.1
-Gibraltar,"40,000.00",2.9
-Holy See (Vatican City),"1,000.00",2.5
-Hungary,"9,632,000.00",2.8
-Iceland,"398,000.00",3.8
-Ireland,"5,308,000.00",1.5
-Italy,"59,146,000.00",1.1
-Kosovo,"1,674,000.00",0.2 (Joshua Project)
-Latvia,"1,854,000.00",7
-Liechtenstein,"40,000.00",0.5
-Lithuania,"2,830,000.00",1.1
-Luxemburg,"680,000.00",0.5
-Malta,"545,000.00",1.3
-Moldova,"2,996,000.00",3.7
-Monaco,"38,000.00",1.2
-Montenegro,"633,000.00",0.1
-Netherlands,"18,347,000.00",4.3
-North Macedonia,"1,814,000.00",0.2
-Norway,"5,623,000.00",8.4
-Poland,"38,141,000.00",0.3
-Portugal,"10,412,000.00",3
-Romania,"18,909,000.00",5.4
-Russia,"143,997,000.00",1.2
-San Marino,"34,000.00",0
-Serbia,"6,689,000.00",0.6
-Slovakia, 5.475.000 ,1.2
-Slovenia,"2,117,000.00",0.1
-Spain,"47,890,000.00",1
-Sweden,"10,657,000.00",6.9
-Switzerland,"8,967,000.00",4.4
-Ukraine,"38,980,000.00",3.8
-United Kingdom,"69,551,000.00",8.8
+sep=;
+Country;Population;% Evangelical
+Albania;2772000;0.5
+Andorra;83000;0.4
+Austria;9114000;0.5
+Belarus;8998000;1.3
+Belgium;11759000;1.2
+Bosnia and Herzegovina;3140000;0.1
+Bulgaria;6715000;1.9
+Croatia;3848000;0.4
+Cyprus;1371000;0.8
+Czechia;10609000;0.7
+Denmark;6003000;3.5
+Estonia;1344000;4.9
+Faroe Islands;56000;28.8
+Finland;5623000;12.1
+France;66651000;1
+Germany;84075000;2.1
+Gibraltar;40000;2.9
+Holy See (Vatican City);1000;2.5
+Hungary;9632000;2.8
+Iceland;398000;3.8
+Ireland;5308000;1.5
+Italy;59146000;1.1
+Kosovo;1674000;0.2
+Latvia;1854000;7
+Liechtenstein;40000;0.5
+Lithuania;2830000;1.1
+Luxembourg;680000;0.5
+Malta;545000;1.3
+Moldova;2996000;3.7
+Monaco;38000;1.2
+Montenegro;633000;0.1
+Netherlands;18347000;4.3
+North Macedonia;1814000;0.2
+Norway;5623000;8.4
+Poland;38141000;0.3
+Portugal;10412000;3
+Romania;18909000;5.4
+Russia;143997000;1.2
+San Marino;34000;0
+Serbia;6689000;0.6
+Slovakia;5475000;1.2
+Slovenia;2117000;0.1
+Spain;47890000;1
+Sweden;10657000;6.9
+Switzerland;8967000;4.4
+Ukraine;38980000;3.8
+United Kingdom;69551000;8.8
