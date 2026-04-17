@@ -4,7 +4,7 @@ public class App {
         Pasare cioara = new Pasare("Cioara", 2, 2, "F", true, true);
         Domestic cal = new Domestic("Cal", 4, 7, "M", false, "Poiata");
         
-        System.err.println(pinguin);
+        System.out.println(pinguin);
         System.out.println(pinguin.metodaDeplasare());
         System.out.println(cioara);
         System.out.println(cioara.metodaDeplasare());
