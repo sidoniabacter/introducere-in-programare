@@ -9,6 +9,10 @@ public class App {
          lista.addFirst(record1);
          lista.add(record2);
          lista.addLast(record3);
-         System.out.println(lista);
+        //  System.out.println(lista);
+         for (Record list_record:lista) {
+        System.out.println(list_record);
     }
+    }
+
 }

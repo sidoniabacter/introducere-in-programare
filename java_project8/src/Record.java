@@ -8,4 +8,9 @@ public Record(String nume, int record, String specializarea){
     this.record = record;
     this.specializarea =specializarea;
 }
+
+@Override
+public String toString() {
+    return "Record{Name='" + nume + "', Record=" + record + ", Specializare='" + specializarea + "'}";
+}
 }
