@@ -15,7 +15,7 @@ public class Depozit {
 
     public void tiparesteInventar() {
         for (Produs p : listaProduse) {
-            p.afisare();
+            System.out.println(p);
         }
     }
 }

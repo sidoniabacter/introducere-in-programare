@@ -22,7 +22,20 @@ public Produs(int cod, String nume, double pretBaza, int cantitate){
         this.cantitate += c;
     }
 
-    public void afisare() {
-        System.out.println(cod + " | " + nume + " | " + getPret() + " | " + cantitate);
+     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Produs)) return false;
+        Produs p = (Produs) obj;
+        return this.cod == p.cod;
+    }
+
+    @Override
+    public String toString() {
+        return "Cod: " + cod +
+               ", Nume: " + nume +
+               ", Pret: " + getPret() +
+               ", Cantitate: " + cantitate;
     }
 }
+
