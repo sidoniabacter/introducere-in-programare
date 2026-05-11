@@ -16,6 +16,10 @@ capacitateBaterie +=nrKwh;
         return this.capacitateMarfa;
     }
 
+    public int nivelBaterie(){
+        return capacitateBaterie;
+    };
+
     public boolean decolare (){
         if(nivelBaterie() > 20){
             inAer = true;

@@ -2,10 +2,10 @@ public class EMasina extends Vehicul implements EVehicul, TransportPersoane, Tra
 
 
     private int capacitateBaterie;
-    private String nrMaxPasageri;
+    private int nrMaxPasageri;
     private int capacitateMaxima;
 
-    public EMasina(int id, String producator, int vitezaMax, int capacitateBaterie, String nrMaxPasageri,int capacitateMaxima) {
+    public EMasina(int id, String producator, int vitezaMax, int capacitateBaterie, int nrMaxPasageri,int capacitateMaxima) {
         super(id, producator, vitezaMax);
         this.capacitateBaterie = capacitateBaterie;
         this.nrMaxPasageri = nrMaxPasageri;
