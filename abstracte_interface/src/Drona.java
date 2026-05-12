@@ -35,4 +35,11 @@ capacitateBaterie +=nrKwh;
         return false;
     }
     
+    public String toString(){
+     return "Drona" + 
+     "id"+getId()+ 
+     " producator "+ getProducator() + 
+     " capacitate baterie " + capacitateBaterie + 
+     " capacitate marfa "+ capacitateMarfa;
+}
 }

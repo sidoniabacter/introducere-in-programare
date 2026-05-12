@@ -29,7 +29,10 @@ public abstract class Vehicul {
     public void setVitezaMax(int vitezaMax) {
         this.vitezaMax = vitezaMax;
     }
-
+public boolean equals(Vehicul v){
+ return this.id == v.id;
+}
     
+
 
 }

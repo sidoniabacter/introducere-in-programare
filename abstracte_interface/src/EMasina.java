@@ -24,4 +24,16 @@ public class EMasina extends Vehicul implements EVehicul, TransportPersoane, Tra
     public int capacitateMaxima(){
         return this.capacitateMaxima;
     }
+
+    public String toString(){
+     return "EMasina" + 
+     "id"+getId()+ 
+     " producator "+ getProducator() + 
+     " viteza maxima " + getVitezaMax() + 
+     " capacitate baterie " + capacitateBaterie +
+     " nr maxim de pasageri "+ nrMaxPasageri +
+     " capacitate maxima " + capacitateMaxima;
+     
+     
+}
 }

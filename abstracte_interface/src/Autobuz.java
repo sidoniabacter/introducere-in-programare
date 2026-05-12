@@ -8,4 +8,12 @@ public int nrMaxPasageri(){
     return nrMaxPasageri;
 }
 
+public String toString(){
+     return "Autobuz" + 
+     "id"+getId()+ 
+     " producator "+ getProducator() + 
+     " viteza maxima " + getVitezaMax() + 
+     " nr maxim de pasageri "+ nrMaxPasageri;
+}
+
 }
