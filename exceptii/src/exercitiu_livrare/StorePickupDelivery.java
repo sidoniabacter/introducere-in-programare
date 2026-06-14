@@ -5,7 +5,7 @@ public class StorePickupDelivery implements Delivery{
 
     @Override
 public String getDeliveryMethodName(){
-    return "Locker";
+    return "Store Pickup";
 }
 @Override
 public double calculateCost (double weight) throws DeliveryException{
