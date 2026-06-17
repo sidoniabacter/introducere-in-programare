@@ -58,7 +58,7 @@ public String getSubCategorie (String AruncareGunoaie, String DistrugereBunuri, 
     }
     }
 
-    public String getSubCategorieDupaCnp (Long cnp){
+    public String getSubCategorieDupaCnp (Long Cnp){
     
     Iterator<Amenda> iterator3 = set.iterator();
     while(iterator3.ArrayList()){

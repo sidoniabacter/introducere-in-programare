@@ -1,82 +1,178 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class App {
+
+    static class Tara {
+        String nume;
+        String urlDetalii;
+        String populatie = "N/A";
+        String procentEvanghelici = "N/A";
+
+        Tara(String nume, String urlDetalii) {
+            this.nume = nume;
+            this.urlDetalii = urlDetalii;
+        }
+    }
+
     public static void main(String[] args) {
-
-        String[][] countries = {
-                {"Albania", "2772000", "0.5"},
-                {"Andorra", "83000", "0.4"},
-                {"Austria", "9114000", "0.5"},
-                {"Belarus", "8998000", "1.3"},
-                {"Belgium", "11759000", "1.2"},
-                {"Bosnia and Herzegovina", "3140000", "0.1"},
-                {"Bulgaria", "6715000", "1.9"},
-                {"Croatia", "3848000", "0.4"},
-                {"Cyprus", "1371000", "0.8"},
-                {"Czechia", "10609000", "0.7"},
-                {"Denmark", "6003000", "3.5"},
-                {"Estonia", "1344000", "4.9"},
-                {"Faroe Islands", "56000", "28.8"},
-                {"Finland", "5623000", "12.1"},
-                {"France", "66651000", "1"},
-                {"Germany", "84075000", "2.1"},
-                {"Gibraltar", "40000", "2.9"},
-                {"Holy See (Vatican City)", "1000", "2.5"},
-                {"Hungary", "9632000", "2.8"},
-                {"Iceland", "398000", "3.8"},
-                {"Ireland", "5308000", "1.5"},
-                {"Italy", "59146000", "1.1"},
-                {"Kosovo", "1674000", "0.2"},
-                {"Latvia", "1854000", "7"},
-                {"Liechtenstein", "40000", "0.5"},
-                {"Lithuania", "2830000", "1.1"},
-                {"Luxembourg", "680000", "0.5"},
-                {"Malta", "545000", "1.3"},
-                {"Moldova", "2996000", "3.7"},
-                {"Monaco", "38000", "1.2"},
-                {"Montenegro", "633000", "0.1"},
-                {"Netherlands", "18347000", "4.3"},
-                {"North Macedonia", "1814000", "0.2"},
-                {"Norway", "5623000", "8.4"},
-                {"Poland", "38141000", "0.3"},
-                {"Portugal", "10412000", "3"},
-                {"Romania", "18909000", "5.4"},
-                {"Russia", "143997000", "1.2"},
-                {"San Marino", "34000", "0"},
-                {"Serbia", "6689000", "0.6"},
-                {"Slovakia", "5475000", "1.2"},
-                {"Slovenia", "2117000", "0.1"},
-                {"Spain", "47890000", "1"},
-                {"Sweden", "10657000", "6.9"},
-                {"Switzerland", "8967000", "4.4"},
-                {"Ukraine", "38980000", "3.8"},
-                {"United Kingdom", "69551000", "8.8"},
-                
-
-        };
+        String urlPrincipala = "https://operationworld.org/locations/europe/";
+        List<Tara> listaTari = new ArrayList<>();
 
         try {
+            System.out.println("Faza 1: Conectare la Operation World...");
+            String htmlPrincipal = descarcaPaginaCompleta(urlPrincipala);
+
+            if (htmlPrincipal.isEmpty()) {
+                System.out.println("Eroare: Nu s-a putut citi site-ul. Verifica conexiunea la internet.");
+                return;
+            }
+
+            // Pasul 1: Găsim toate link-urile către țări din codul sursă
+            Pattern patternLink = Pattern.compile("href=\"/locations/([a-z\\-]+)/?\"");
+            Matcher matcherLink = patternLink.matcher(htmlPrincipal);
+
+            while (matcherLink.find()) {
+                String slug = matcherLink.group(1);
+                
+                if (!slug.equals("europe") && !slug.equals("locations")) {
+                    String urlTara = "https://operationworld.org/locations/" + slug + "/";
+                    
+                    // Transformăm din "romania" -> "Romania", "san-marino" -> "San Marino"
+                    String[] bucati = slug.split("-");
+                    StringBuilder numeFrumos = new StringBuilder();
+                    for (String b : bucati) {
+                        if (!b.isEmpty()) {
+                            numeFrumos.append(Character.toUpperCase(b.charAt(0))).append(b.substring(1)).append(" ");
+                        }
+                    }
+                    String numeFinal = numeFrumos.toString().trim();
+
+                    boolean exista = false;
+                    for (Tara t : listaTari) {
+                        if (t.urlDetalii.equals(urlTara)) { exista = true; break; }
+                    }
+                    if (!exista) {
+                        listaTari.add(new Tara(numeFinal, urlTara));
+                    }
+                }
+            }
+
+            // Dacă din motive de securitate site-ul blochează lista, adăugăm manual principalele țări din Europa ca să fim siguri că ai date în fișier!
+            if (listaTari.isEmpty()) {
+                System.out.println("[Sistem de Urgență] Folosim lista predefinită de țări din Europa...");
+                String[] tariUrgenta = {"romania", "moldova", "france", "germany", "italy", "spain", "united-kingdom", "poland", "ukraine", "greece", "austria", "hungary", "bulgaria"};
+                for (String t : tariUrgenta) {
+                    String nume = Character.toUpperCase(t.charAt(0)) + t.substring(1);
+                    listaTari.add(new Tara(nume, "https://operationworld.org/locations/" + t + "/"));
+                }
+            }
+
+            System.out.println("\nSe procesează " + listaTari.size() + " țări...");
+            System.out.println("---------------------------------------------------------------------------------");
+
+            // Faza 2: Intram pe fiecare țară și extragem cifrele brute
+            for (Tara tara : listaTari) {
+                System.out.print("Se descarcă: " + tara.nume + " ... ");
+                String htmlTara = descarcaPaginaCompleta(tara.urlDetalii);
+
+                // Curățăm tagurile HTML ca să rămână doar textul curat și cifrele
+                String textCurat = htmlTara.replaceAll("<[^>]*>", " ").replaceAll("\\s+", " ");
+
+                // Căutare Populație în textul curat (Caută numărul de după cuvântul Population)
+                Pattern pPop = Pattern.compile("Population:\\s*([0-9,\\s]+)");
+                Matcher mPop = pPop.matcher(textCurat);
+                if (mPop.find()) {
+                    tara.populatie = mPop.group(1).trim();
+                } else {
+                    // Căutare secundară în format JSON din spatele paginii
+                    Pattern pPopJson = Pattern.compile("\"population\"\\s*:\\s*\"?([0-9,\\.]+)\"?");
+                    Matcher mPopJson = pPopJson.matcher(htmlTara);
+                    if (mPopJson.find()) {
+                        tara.populatie = mPopJson.group(1).trim();
+                    }
+                }
+
+                // Căutare % Evanghelici în textul curat
+                Pattern pEv = Pattern.compile("Evangelical:\\s*([0-9\\.,\\s]+%?)");
+                Matcher mEv = pEv.matcher(textCurat);
+                if (mEv.find()) {
+                    tara.procentEvanghelici = mEv.group(1).trim();
+                } else {
+                    // Căutare secundară în format JSON
+                    Pattern pEvJson = Pattern.compile("\"evangelicalPct\"\\s*:\\s*\"?([0-9\\.]+)\"?");
+                    Matcher mEvJson = pEvJson.matcher(htmlTara);
+                    if (mEvJson.find()) {
+                        tara.procentEvanghelici = mEvJson.group(1).trim() + "%";
+                    }
+                }
+
+                System.out.println("[Populație: " + tara.populatie + " | Evanghelici: " + tara.procentEvanghelici + "]");
+                Thread.sleep(100); 
+            }
+
+            // Faza 3: Scrierea garantată în fișier pe desktop-ul tău
             File file = new File("C:/Users/HP/Desktop/introducere in programare/tema/output.csv");
+            if (file.getParentFile() != null) {
+                file.getParentFile().mkdirs();
+            }
 
-            System.out.println("Writing to: " + file.getAbsolutePath());
-
-            FileWriter writer = new FileWriter(file);
-
+            FileWriter writer = new FileWriter(file, false);
             writer.write("sep=;\n");
             writer.write("Country;Population;% Evangelical\n");
 
-            for (String[] c : countries) {
-                writer.write(c[0] + ";" + c[1] + ";" + c[2] + "\n");
+            for (Tara tara : listaTari) {
+                // Înlocuim eventualele puncte/virgule ce pot strica fișierul Excel
+                String pop = tara.populatie.replace(";", "").trim();
+                String ev = tara.procentEvanghelici.replace(";", "").trim();
+                writer.write(tara.nume + ";" + pop + ";" + ev + "\n");
             }
 
             writer.close();
+            System.out.println("\n---------------------------------------------------------------------------------");
+            System.out.println("SUCCES! Fișierul CSV a fost creat cu date salvate la adresa:");
+            System.out.println(file.getAbsolutePath());
 
-            System.out.println("CSV created successfully!");
-
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.out.println("\nA apărut o eroare.");
             e.printStackTrace();
         }
+    }
+
+    private static String descarcaPaginaCompleta(String urlString) {
+        StringBuilder continut = new StringBuilder();
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection conexiune = (HttpURLConnection) url.openConnection();
+            conexiune.setRequestMethod("GET");
+            // Setăm exact headerele pe care un server securizat le cere în 2026 pentru a nu ne da pagini goale
+            conexiune.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+            conexiune.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+            conexiune.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            conexiune.setConnectTimeout(5000);
+            conexiune.setReadTimeout(5000);
+
+            if (conexiune.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conexiune.getInputStream(), "UTF-8"));
+                String linie;
+                while ((linie = reader.readLine()) != null) {
+                    continut.append(linie).append("\n");
+                }
+                reader.close();
+            }
+            conexiune.disconnect();
+        } catch (IOException e) {
+            // Lăsăm programul să meargă mai departe dacă o pagină dă timeout
+        }
+        return continut.toString();
     }
 }
