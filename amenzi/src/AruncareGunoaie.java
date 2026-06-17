@@ -1,5 +1,3 @@
-import exercitiu_livrare.DeliveryException;
-import exercitiu_livrare.InvalidWeight;
 
 public class AruncareGunoaie extends Amenda {
 private static final int AMENDA = 200;
